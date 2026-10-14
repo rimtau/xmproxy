@@ -74,3 +74,15 @@ Không có fallback kết nối trực tiếp khi upstream hỏng. Client vẫn 
 của xmproxy. Có thể kết hợp `--intercept`, `--record`, `--trusted-ca` và upstream
 authentication như chế độ thông thường. `--upstream` cũng sử dụng cùng cơ chế;
 `--upstream-only` làm rõ và kiểm tra yêu cầu bắt buộc dùng upstream.
+
+## Truy cập web UI từ máy khác
+
+```sh
+uv run xmproxy --web-host 0.0.0.0 --web-port 8081 --upstream http://brd.superproxy.io:44445
+```
+
+Mở TCP 8081 trong firewall/security group của máy chủ. Dùng địa chỉ public của
+máy chủ và token được in khi khởi động để đăng nhập. UI cho phép đọc và chỉnh sửa
+lưu lượng nhạy cảm; giữ token kín. HTTP không mã hóa token/lưu lượng UI trên mạng,
+nên dùng reverse proxy HTTPS khi truy cập qua Internet và ưu tiên giới hạn IP
+trong firewall. Proxy lưu lượng ở cổng 8080 vẫn mặc định bind localhost.

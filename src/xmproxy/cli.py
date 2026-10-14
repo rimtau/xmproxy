@@ -24,6 +24,7 @@ def command(argv=None):
     parser = argparse.ArgumentParser(description="Inspect HTTP/HTTPS and WebSocket traffic in a local web UI")
     parser.add_argument("--listen-host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8080)
+    parser.add_argument("--web-host", default="127.0.0.1", help="web UI bind address; use 0.0.0.0 for remote access")
     parser.add_argument("--web-port", type=int, default=8081)
     parser.add_argument("--upstream-only", action="store_true", help="require upstream routing while retaining TLS inspection and web UI")
     parser.add_argument("--upstream", type=upstream_url)
@@ -41,7 +42,7 @@ def command(argv=None):
         parser.error("proxy and web ports must differ")
     args.data_dir.mkdir(parents=True, exist_ok=True, mode=0o700)
     cmd = ["mitmweb", "--listen-host", args.listen_host, "--listen-port", str(args.port),
-           "--web-host", "127.0.0.1", "--web-port", str(args.web_port),
+           "--web-host", args.web_host, "--web-port", str(args.web_port),
            "--no-web-open-browser", "--set", f"confdir={args.data_dir.resolve()}"]
     if args.upstream:
         cmd += ["--mode", "upstream:" + args.upstream]

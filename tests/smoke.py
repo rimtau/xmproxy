@@ -28,7 +28,7 @@ async def main():
                 if (root / 'upstream/mitmproxy-ca-cert.pem').exists():
                     break
                 await asyncio.sleep(.1)
-            await spawn('.venv/bin/xmproxy', '--port', '18080', '--web-port', '18081',
+            await spawn('.venv/bin/xmproxy', '--port', '18080', '--web-host', '0.0.0.0', '--web-port', '18081',
                         '--data-dir', str(root / 'client'), '--upstream-only', '--upstream', 'http://127.0.0.1:19090',
                         '--record', str(root / 'flows.mitm'), '--trusted-ca', str(root / 'upstream/mitmproxy-ca-cert.pem'))
             ca = root / 'upstream/mitmproxy-ca-cert.pem'
